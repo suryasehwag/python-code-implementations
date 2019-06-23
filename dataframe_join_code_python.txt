@@ -1,0 +1,33 @@
+import pandas as pd
+df1=pd.read_csv('C://Users//M1034080//documents//df_1.csv',sep=',',engine='python')
+df3=pd.read_csv('C://Users//M1034080//documents//df_2.csv',sep=',',engine='python')
+df3['actorName']=df3['actorName'].str.strip()
+df3['actorName']=df3['actorName'].str.replace(' ','')
+df3['actorName']=df3['actorName'].str.lower()
+# df3['actorName']=map(lambda x: x.lower(), df3['actorName'])
+final_result=pd.DataFrame([])
+position=0
+for col in df1.columns:
+    df1[col]=df1[col].str.strip()
+    df1[col]=df1[col].str.replace(' ','')
+    df1[col]=df1[col].str.lower()
+    result=pd.merge(df1[[col]],df3[['actorId','actorName']], left_on=  [col],
+                   right_on= ['actorName'], 
+                   how = 'left')
+    result[col] = result['actorId']
+    result = result.fillna({col: -1})
+    final_result.insert(position,col,result[col].astype(int))
+    position+=1
+print(final_result.head())
+
+
+
+
+    
+
+
+
+
+
+
+
